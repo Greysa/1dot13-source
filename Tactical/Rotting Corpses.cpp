@@ -713,6 +713,10 @@ void RemoveCorpse( INT32 iCorpseID )
 	DeleteAniTile( gRottingCorpse[ iCorpseID ].pAniTile );
 
 	FreeCorpsePalettes( &( gRottingCorpse[ iCorpseID ] ) );
+
+	const auto sGridNo = gRottingCorpse[iCorpseID].def.sGridNo;
+	auto pStructure = FindLastStructure(sGridNo, STRUCTURE_CORPSE);
+	DeleteStructureFromWorld(pStructure);
 }
 
 BOOLEAN CreateCorpsePalette( ROTTING_CORPSE *pCorpse )
@@ -1770,10 +1774,10 @@ BOOLEAN IsValidDecapitationCorpse( ROTTING_CORPSE *pCorpse )
 
 ROTTING_CORPSE *GetCorpseAtGridNo( INT32 sGridNo, INT8 bLevel )
 {
-	STRUCTURE				*pStructure, *pBaseStructure;
+	STRUCTURE *pStructure, *pBaseStructure;
 	INT32 sBaseGridNo;
 
-	pStructure = FindStructure( sGridNo, STRUCTURE_CORPSE );
+	pStructure = FindLastStructure( sGridNo, STRUCTURE_CORPSE );
 
 	if ( pStructure != NULL )
 	{
